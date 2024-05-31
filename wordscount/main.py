@@ -39,6 +39,11 @@ def read_txt(file_path, file_name):
 
 
 def pdf_to_txt(file_path):
+    """
+    :param file_path:
+
+    :return: Nothing
+    """
     return
 
 
@@ -64,6 +69,8 @@ def count_word_frequency(words_list, top_n=None):
 
 
 # Starts here
-words_list = get_txt_list_from_dir()
-wc = count_word_frequency(words_list)
+#words_list = get_txt_list_from_dir()
+#wc = count_word_frequency(words_list)
+pdf_to_txt()
+
 print(wc)
