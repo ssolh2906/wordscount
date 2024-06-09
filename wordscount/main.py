@@ -4,6 +4,8 @@ import os
 import re
 from collections import Counter
 
+from wordscount.config import CONVERTED_TEXTS_DIR, WORDS_TO_EXCLUDE
+
 
 # Functions
 def get_txt_list_from_dir():
@@ -11,7 +13,7 @@ def get_txt_list_from_dir():
     for _ in range(2):
         text_sources_dir = os.path.dirname(text_sources_dir)
 
-    text_sources_dir = os.path.join(text_sources_dir, 'converted txt')
+    text_sources_dir = os.path.join(text_sources_dir, CONVERTED_TEXTS_DIR)
 
     file_list = os.listdir(text_sources_dir)
     text_files = [file for file in file_list if file.endswith('.txt')]
@@ -19,6 +21,16 @@ def get_txt_list_from_dir():
     for filename in text_files:
         text_list.extend(read_txt(text_sources_dir, filename))
     return text_list
+
+
+def get_words_to_exclude():
+    source_dir = os.path.dirname(os.path.dirname(__file__))
+    for _ in range(2):
+        source_dir = os.path.dirname(source_dir)
+
+    words_list = read_txt(source_dir, WORDS_TO_EXCLUDE)
+
+    return words_list
 
 
 def read_txt(file_path, file_name):
@@ -36,15 +48,6 @@ def read_txt(file_path, file_name):
         filtered_words = [word.lower() for word in words if len(word) > 1]
         word_list.extend(filtered_words)
     return word_list
-
-
-def pdf_to_txt(file_path):
-    """
-    :param file_path:
-
-    :return: Nothing
-    """
-    return
 
 
 def count_word_frequency(words_list, top_n=None):
@@ -65,12 +68,14 @@ def count_word_frequency(words_list, top_n=None):
     # Convert to (word, count) format for the final output
     sorted_word_counts = [(word, -count) for count, word in top_words]
 
-    return sorted_word_counts
+    words_to_exclude = get_words_to_exclude()
+    new_word_counts = {k: v for k, v in sorted_word_counts if k not in words_to_exclude}
+
+    return new_word_counts
 
 
 # Starts here
 words_list = get_txt_list_from_dir()
 wc = count_word_frequency(words_list)
-
 
 print(wc)
