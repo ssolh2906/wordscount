@@ -11,7 +11,7 @@ def get_txt_list_from_dir():
     for _ in range(2):
         text_sources_dir = os.path.dirname(text_sources_dir)
 
-    text_sources_dir = os.path.join(text_sources_dir, 'textsource')
+    text_sources_dir = os.path.join(text_sources_dir, 'converted txt')
 
     file_list = os.listdir(text_sources_dir)
     text_files = [file for file in file_list if file.endswith('.txt')]
@@ -27,7 +27,7 @@ def read_txt(file_path, file_name):
     output : list of words in file
     """
     word_list = []
-    pattern = r'[0-9\n\t.,?!;:(){}\[\]\'\"\\-]|\\n|\\t'
+    pattern = r'[^a-zA-Z]'
     with open(os.path.join(file_path, file_name), 'r', encoding='utf-8') as file:
         lines = file.readlines()
     for line in lines:
@@ -69,8 +69,8 @@ def count_word_frequency(words_list, top_n=None):
 
 
 # Starts here
-#words_list = get_txt_list_from_dir()
-#wc = count_word_frequency(words_list)
-pdf_to_txt()
+words_list = get_txt_list_from_dir()
+wc = count_word_frequency(words_list)
+
 
 print(wc)
